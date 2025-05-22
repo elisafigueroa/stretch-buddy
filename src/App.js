@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { stretches, categories } from './data/stretches';
 import { ProgressProvider, useProgress } from './context/ProgressContext';
 import { FavoritesProvider, useFavorites } from './context/FavoritesContext';
@@ -38,7 +38,7 @@ function StretchApp() {
     setIsPaused(false);
   };
 
-  const endStretch = (completed = false) => {
+  const endStretch = useCallback((completed = false) => {
     if (isActive && !isPaused) {
       recordStretch(currentStretch.duration - timer);
       if (completed) {
@@ -49,7 +49,7 @@ function StretchApp() {
     setIsPaused(false);
     setCurrentStretch(null);
     setTimer(0);
-  };
+  }, [isActive, isPaused, recordStretch, currentStretch, timer]);
 
   const togglePause = () => {
     setIsPaused(!isPaused);
