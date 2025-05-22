@@ -74,14 +74,20 @@ export function AudioProvider({ children }) {
 
   // Cleanup on unmount
   useEffect(() => {
+    const audio = audioRef.current;
+    const sfx = sfxRefs.current;
+
     return () => {
-      if (fadeTimeoutRef.current) {
-        clearTimeout(fadeTimeoutRef.current);
-      }
-      audioRef.current.pause();
-      Object.values(sfxRefs.current).forEach(audio => {
+      if (audio) {
         audio.pause();
-      });
+        audio.currentTime = 0;
+      }
+      if (sfx) {
+        Object.values(sfx).forEach(sound => {
+          sound.pause();
+          sound.currentTime = 0;
+        });
+      }
     };
   }, []);
 

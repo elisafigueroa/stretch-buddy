@@ -77,7 +77,7 @@ class AIRecommendationService {
     return tf.tensor2d([features]);
   }
 
-  // Enhanced getRecommendations with debugging
+  // Enhanced getRecommendations with detailed logging
   async getRecommendations(exercises, userStats) {
     if (!this.isModelLoaded) {
       await this.initialize();
@@ -106,12 +106,12 @@ class AIRecommendationService {
         aiScore: predictions[index]
       }));
 
-      // Log recommendation details
-      console.debug('AI Recommendations:', scoredExercises.map(ex => ({
-        id: ex.id,
+      // Log detailed recommendation information
+      console.log('AI Recommendations:', scoredExercises.map(ex => ({
         name: ex.name,
-        score: ex.aiScore,
-        difficulty: ex.difficulty
+        difficulty: ex.difficulty,
+        score: ex.aiScore.toFixed(3),
+        type: ex.type
       })));
 
       // Sort by AI score and return top recommendations
@@ -141,23 +141,28 @@ class AIRecommendationService {
       });
 
       // Store training history
-      this.trainingHistory.push({
+      const trainingRecord = {
         timestamp: new Date().toISOString(),
         exercise: exercise.id,
         soreness: sorenessLevel,
         loss: history.history.loss[history.history.loss.length - 1]
+      };
+      
+      this.trainingHistory.push(trainingRecord);
+
+      // Log detailed training information
+      console.log('Training Progress:', {
+        exercise: exercise.name,
+        difficulty: exercise.difficulty,
+        soreness: sorenessLevel,
+        loss: trainingRecord.loss,
+        totalRecords: this.trainingHistory.length
       });
 
       // Keep only last 100 training records
       if (this.trainingHistory.length > 100) {
         this.trainingHistory = this.trainingHistory.slice(-100);
       }
-
-      console.debug('Training completed:', {
-        exercise: exercise.id,
-        soreness: sorenessLevel,
-        loss: history.history.loss[history.history.loss.length - 1]
-      });
 
       // Save model after training
       await this.saveModel();

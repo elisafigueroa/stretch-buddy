@@ -1,0 +1,90 @@
+.exercise-timer {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--card-background);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.timer-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.timer-header h2 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.exercise-name {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.timer-display {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.time {
+  font-size: 4rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.progress {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.timer-button {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.timer-button.start {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.timer-button.start:hover {
+  background-color: var(--success-color-dark);
+}
+
+.timer-button.pause {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.timer-button.pause:hover {
+  background-color: var(--warning-color-dark);
+}
+
+.exercise-details {
+  background-color: var(--background-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-md);
+}
+
+.exercise-details h3 {
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.exercise-details p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+} 

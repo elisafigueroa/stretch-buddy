@@ -1,84 +1,38 @@
 import React from 'react';
 import { useExerciseProgress } from '../context/ExerciseProgressContext';
 import { useTheme } from '../context/ThemeContext';
+import '../styles/ExerciseProgressDashboard.css';
 
 function ExerciseProgressDashboard() {
-  const { 
-    progress, 
-    getOverallStats,
-    checkProgression,
-    updateDifficulty 
-  } = useExerciseProgress();
-  
-  const { isDarkMode } = useTheme();
-  const stats = getOverallStats();
-  const canProgress = checkProgression();
-  
-  const formatDuration = (seconds) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    
-    if (hours > 0) {
-      return `${hours}h ${minutes}m`;
-    }
-    return `${minutes}m`;
-  };
-  
-  const handleProgression = () => {
-    const nextDifficulty = progress.preferredDifficulty === 'gentle' ? 'moderate' : 'advanced';
-    updateDifficulty(nextDifficulty);
-  };
-  
+  const { progress, getRecommendations } = useExerciseProgress();
+  const { theme } = useTheme();
+
   return (
-    <div className="exercise-progress-dashboard">
-      <h3>Your Progress</h3>
-      
-      <div className="stats-grid">
+    <div className={`exercise-progress-dashboard ${theme}`}>
+      <h2>Exercise Progress</h2>
+      <div className="progress-stats">
         <div className="stat-card">
-          <span className="stat-value">{stats.dailyStreak}</span>
-          <span className="stat-label">Day Streak</span>
+          <h3>Total Exercises</h3>
+          <p>{progress.totalExercises}</p>
         </div>
-        
         <div className="stat-card">
-          <span className="stat-value">{stats.totalExercises}</span>
-          <span className="stat-label">Exercises Tried</span>
+          <h3>This Week</h3>
+          <p>{progress.weeklyExercises}</p>
         </div>
-        
         <div className="stat-card">
-          <span className="stat-value">{stats.totalCompletions}</span>
-          <span className="stat-label">Total Completions</span>
-        </div>
-        
-        <div className="stat-card">
-          <span className="stat-value">{formatDuration(stats.totalDuration)}</span>
-          <span className="stat-label">Total Time</span>
+          <h3>Streak</h3>
+          <p>{progress.currentStreak} days</p>
         </div>
       </div>
       
-      <div className="current-difficulty">
-        <h4>Current Difficulty</h4>
-        <div className="difficulty-indicator">
-          <span className={`difficulty-dot ${progress.preferredDifficulty === 'gentle' ? 'active' : ''}`} />
-          <span className={`difficulty-dot ${progress.preferredDifficulty === 'moderate' ? 'active' : ''}`} />
-          <span className={`difficulty-dot ${progress.preferredDifficulty === 'advanced' ? 'active' : ''}`} />
-        </div>
-        <p className="difficulty-label">
-          {progress.preferredDifficulty.charAt(0).toUpperCase() + 
-           progress.preferredDifficulty.slice(1)}
-        </p>
+      <div className="recommendations">
+        <h3>Recommended Exercises</h3>
+        <ul>
+          {getRecommendations().map((exercise, index) => (
+            <li key={index}>{exercise.name}</li>
+          ))}
+        </ul>
       </div>
-      
-      {canProgress && (
-        <div className="progression-prompt">
-          <p>You're ready to try more challenging exercises!</p>
-          <button 
-            className="progression-button"
-            onClick={handleProgression}
-          >
-            Progress to {progress.preferredDifficulty === 'gentle' ? 'Moderate' : 'Advanced'}
-          </button>
-        </div>
-      )}
     </div>
   );
 }

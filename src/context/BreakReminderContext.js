@@ -67,21 +67,21 @@ export function BreakReminderProvider({ children }) {
   
   // Handle countdown
   useEffect(() => {
-    if (!isActive || !settings.enabled) return;
-    
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          handleReminder();
-          return settings.interval;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    
-    return () => clearInterval(timer);
-  }, [isActive, settings.enabled, settings.interval]);
+    if (settings.enabled) {
+      const timer = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            handleReminder();
+            return settings.interval;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      
+      return () => clearInterval(timer);
+    }
+  }, [settings.enabled, settings.interval, handleReminder]);
   
   // Request notification permission
   const requestNotificationPermission = useCallback(async () => {

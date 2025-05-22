@@ -1,0 +1,144 @@
+.routine-generator {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.routine-generator h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.time-selector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.time-selector label {
+  font-weight: 500;
+}
+
+.time-selector select {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.generate-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.generate-button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.generate-button:disabled {
+  background-color: var(--disabled-color);
+  cursor: not-allowed;
+}
+
+.routine-display {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.routine-display h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.routine-summary {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.target-areas {
+  margin-bottom: 1.5rem;
+}
+
+.target-areas h4 {
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.area-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.area-tag {
+  padding: 0.25rem 0.75rem;
+  background-color: var(--tag-background);
+  color: var(--tag-text);
+  border-radius: 16px;
+  font-size: 0.9rem;
+}
+
+.exercise-list {
+  margin: 1.5rem 0;
+}
+
+.exercise-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--background-color);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.exercise-number {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.exercise-details h4 {
+  margin: 0;
+  color: var(--text-color);
+}
+
+.exercise-details p {
+  margin: 0.25rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.start-routine-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--success-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.start-routine-button:hover {
+  background-color: var(--success-color-dark);
+} 

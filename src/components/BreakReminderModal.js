@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useBreakReminder } from '../context/BreakReminderContext';
 import { useExerciseProgress } from '../context/ExerciseProgressContext';
 import { useTheme } from '../context/ThemeContext';
+import '../styles/BreakReminderModal.css';
 
 function BreakReminderModal() {
   const { 
@@ -14,7 +15,7 @@ function BreakReminderModal() {
   } = useBreakReminder();
   
   const { recordExercise, getRecommendations } = useExerciseProgress();
-  const { isDarkMode } = useTheme();
+  const { theme } = useTheme();
   
   const [exerciseDuration, setExerciseDuration] = useState(0);
   const [isExercising, setIsExercising] = useState(false);
@@ -82,8 +83,8 @@ function BreakReminderModal() {
   };
   
   return (
-    <div className="break-reminder-modal">
-      <div className="break-reminder-content">
+    <div className="modal-overlay">
+      <div className={`modal-content ${theme}`}>
         <h2>Time for a Break!</h2>
         
         <div className="exercise-card">
