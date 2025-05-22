@@ -62,18 +62,20 @@ function StretchApp() {
   };
 
   useEffect(() => {
-    let interval = null;
-
-    if (isActive && !isPaused && timer > 0) {
+    let interval;
+    if (isActive && !isPaused) {
       interval = setInterval(() => {
-        setTimer((timer) => timer - 1);
+        setTimer((time) => {
+          if (time <= 1) {
+            endStretch(true);
+            return 0;
+          }
+          return time - 1;
+        });
       }, 1000);
-    } else if (timer === 0 && isActive) {
-      endStretch(true);
     }
-
     return () => clearInterval(interval);
-  }, [isActive, isPaused, timer]);
+  }, [isActive, isPaused, endStretch]);
 
   const renderStretchGrid = () => {
     if (showFavorites && favorites.length === 0) {
