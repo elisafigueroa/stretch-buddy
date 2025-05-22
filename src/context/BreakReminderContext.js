@@ -30,6 +30,31 @@ export function BreakReminderProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('breakReminderSettings', JSON.stringify(settings));
   }, [settings]);
+
+  // Update settings
+  const updateSettings = useCallback((newSettings) => {
+    setSettings(prev => ({
+      ...prev,
+      ...newSettings
+    }));
+    
+    // Reset timer if interval changed
+    if (newSettings.interval) {
+      setTimeLeft(newSettings.interval);
+    }
+  }, []);
+  
+  // Toggle reminder
+  const toggleReminder = useCallback(() => {
+    setSettings(prev => ({
+      ...prev,
+      enabled: !prev.enabled
+    }));
+    
+    if (settings.enabled) {
+      setTimeLeft(settings.interval);
+    }
+  }, [settings.enabled, settings.interval]);
   
   // Select a random exercise based on preferences
   const selectRandomExercise = useCallback(() => {
@@ -56,21 +81,22 @@ export function BreakReminderProvider({ children }) {
     const randomIndex = Math.floor(Math.random() * finalExercises.length);
     const exercise = finalExercises[randomIndex];
     
-    setSettings(prev => ({
-      ...prev,
-      lastExerciseId: exercise.id,
-      lastExerciseType: exercise.type
-    }));
-    
     return exercise;
   }, [settings.lastExerciseId, settings.lastExerciseType, settings.preferredDifficulty]);
-  
-  // Define handleReminder FIRST
+
+  // Handle reminder
   const handleReminder = useCallback(() => {
     const exercise = selectRandomExercise();
     setCurrentExercise(exercise);
     setShowReminder(true);
     playSoundEffect('stretchStart');
+    
+    // Update settings after selecting exercise
+    setSettings(prev => ({
+      ...prev,
+      lastExerciseId: exercise.id,
+      lastExerciseType: exercise.type
+    }));
     
     if (settings.notificationsEnabled) {
       new Notification('Time for a Break!', {
@@ -80,7 +106,7 @@ export function BreakReminderProvider({ children }) {
     }
   }, [settings.notificationsEnabled, playSoundEffect, selectRandomExercise]);
   
-  // Then use it in useEffect
+  // Handle countdown
   useEffect(() => {
     if (settings.enabled) {
       const timer = setInterval(() => {
@@ -131,31 +157,6 @@ export function BreakReminderProvider({ children }) {
     setTimeLeft(settings.interval);
     setIsActive(true);
   }, [settings.interval]);
-  
-  // Update settings
-  const updateSettings = useCallback((newSettings) => {
-    setSettings(prev => ({
-      ...prev,
-      ...newSettings
-    }));
-    
-    // Reset timer if interval changed
-    if (newSettings.interval) {
-      setTimeLeft(newSettings.interval);
-    }
-  }, []);
-  
-  // Toggle reminder
-  const toggleReminder = useCallback(() => {
-    setSettings(prev => ({
-      ...prev,
-      enabled: !prev.enabled
-    }));
-    
-    if (settings.enabled) {
-      setTimeLeft(settings.interval);
-    }
-  }, [settings.enabled, settings.interval]);
   
   return (
     <BreakReminderContext.Provider value={{

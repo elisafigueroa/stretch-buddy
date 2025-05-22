@@ -3,66 +3,40 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AudioProvider } from './context/AudioContext';
 import { BreakReminderProvider } from './context/BreakReminderContext';
-import { RoutineProvider } from './context/RoutineContext';
-import { TimerProvider } from './context/TimerContext';
-import { SettingsProvider } from './context/SettingsContext';
-import { UserProvider } from './context/UserContext';
-import { ProgressProvider } from './context/ProgressContext';
-import { NotificationProvider } from './context/NotificationContext';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import { MainContent } from './components/MainContent';
-import BreakReminderModal from './components/BreakReminderModal';
-import BreakReminderSettings from './components/BreakReminderSettings';
 import { ExerciseProgressProvider } from './context/ExerciseProgressContext';
+import { RoutineProvider } from './context/RoutineContext';
+import Navbar from './components/Navbar';
+import Home from './components/Home';
 import ExerciseProgressDashboard from './components/ExerciseProgressDashboard';
+import BreakReminderSettings from './components/BreakReminderSettings';
 import RoutineGenerator from './components/RoutineGenerator';
-import ExerciseTimer from './components/ExerciseTimer';
 import './App.css';
 
 function App() {
   return (
-    <ErrorBoundary>
-      <Router>
-        <ThemeProvider>
-          <NotificationProvider>
-            <UserProvider>
-              <SettingsProvider>
-                <AudioProvider>
-                  <BreakReminderProvider>
-                    <ExerciseProgressProvider>
-                      <RoutineProvider>
-                        <TimerProvider>
-                          <ProgressProvider>
-                            <div className="app">
-                              <Header />
-                              <Routes>
-                                <Route path="/" element={
-                                  <>
-                                    <MainContent />
-                                    <ExerciseProgressDashboard />
-                                    <BreakReminderSettings />
-                                    <BreakReminderModal />
-                                    <RoutineGenerator />
-                                  </>
-                                } />
-                                <Route path="/timer" element={<ExerciseTimer />} />
-                              </Routes>
-                              <Footer />
-                            </div>
-                          </ProgressProvider>
-                        </TimerProvider>
-                      </RoutineProvider>
-                    </ExerciseProgressProvider>
-                  </BreakReminderProvider>
-                </AudioProvider>
-              </SettingsProvider>
-            </UserProvider>
-          </NotificationProvider>
-        </ThemeProvider>
-      </Router>
-    </ErrorBoundary>
+    <Router>
+      <ThemeProvider>
+        <AudioProvider>
+          <BreakReminderProvider>
+            <ExerciseProgressProvider>
+              <RoutineProvider>
+                <div className="App">
+                  <Navbar />
+                  <main className="main-content">
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/progress" element={<ExerciseProgressDashboard />} />
+                      <Route path="/settings" element={<BreakReminderSettings />} />
+                      <Route path="/routine" element={<RoutineGenerator />} />
+                    </Routes>
+                  </main>
+                </div>
+              </RoutineProvider>
+            </ExerciseProgressProvider>
+          </BreakReminderProvider>
+        </AudioProvider>
+      </ThemeProvider>
+    </Router>
   );
 }
 
