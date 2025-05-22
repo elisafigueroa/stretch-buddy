@@ -3,8 +3,6 @@ import { useExerciseProgress } from '../context/ExerciseProgressContext';
 import { aiService } from '../services/aiRecommendationService';
 import { exercises } from '../data/exercises';
 import { useNavigate } from 'react-router-dom';
-import { useRoutine } from '../context/RoutineContext';
-import { useTheme } from '../context/ThemeContext';
 import '../styles/RoutineGenerator.css';
 
 function RoutineGenerator() {

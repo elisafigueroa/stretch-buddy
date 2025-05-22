@@ -65,7 +65,22 @@ export function BreakReminderProvider({ children }) {
     return exercise;
   }, [settings.lastExerciseId, settings.lastExerciseType, settings.preferredDifficulty]);
   
-  // Handle countdown
+  // Define handleReminder FIRST
+  const handleReminder = useCallback(() => {
+    const exercise = selectRandomExercise();
+    setCurrentExercise(exercise);
+    setShowReminder(true);
+    playSoundEffect('stretchStart');
+    
+    if (settings.notificationsEnabled) {
+      new Notification('Time for a Break!', {
+        body: `Try this ${exercise.difficulty} exercise: ${exercise.name}`,
+        icon: '/logo192.png'
+      });
+    }
+  }, [settings.notificationsEnabled, playSoundEffect, selectRandomExercise]);
+  
+  // Then use it in useEffect
   useEffect(() => {
     if (settings.enabled) {
       const timer = setInterval(() => {
@@ -102,21 +117,6 @@ export function BreakReminderProvider({ children }) {
       return false;
     }
   }, []);
-  
-  // Handle reminder
-  const handleReminder = useCallback(() => {
-    const exercise = selectRandomExercise();
-    setCurrentExercise(exercise);
-    setShowReminder(true);
-    playSoundEffect('stretchStart');
-    
-    if (settings.notificationsEnabled) {
-      new Notification('Time for a Break!', {
-        body: `Try this ${exercise.difficulty} exercise: ${exercise.name}`,
-        icon: '/logo192.png'
-      });
-    }
-  }, [settings.notificationsEnabled, playSoundEffect, selectRandomExercise]);
   
   // Handle snooze
   const handleSnooze = useCallback(() => {
