@@ -18,18 +18,21 @@ export function CompletionCelebration({ onClose }) {
         show ? 'opacity-100' : 'opacity-0'
       }`}
     >
-      <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose} />
+      <div 
+        className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" 
+        onClick={onClose}
+      />
       
-      <div className="relative bg-white rounded-lg p-8 max-w-sm w-full mx-4 transform transition-transform duration-500 hover:scale-105">
+      <div className="relative bg-white rounded-2xl p-8 max-w-sm w-full mx-4 transform transition-all duration-500 hover:scale-105">
         <div className="text-center">
-          <div className="text-6xl mb-4 animate-bounce">🎉</div>
-          <h2 className="text-2xl font-bold text-blue-600 mb-2">Great job!</h2>
-          <p className="text-gray-600 mb-4">
+          <div className="text-7xl mb-6 animate-bounce">🎉</div>
+          <h2 className="text-3xl font-bold text-blue-600 mb-3">Great job!</h2>
+          <p className="text-gray-600 mb-6 text-lg">
             You've completed your stretch. Keep up the good work!
           </p>
           <button
             onClick={onClose}
-            className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors"
+            className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
             Continue
           </button>
@@ -37,7 +40,7 @@ export function CompletionCelebration({ onClose }) {
 
         {/* Confetti animation */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(20)].map((_, i) => (
+          {[...Array(30)].map((_, i) => (
             <div
               key={i}
               className="absolute animate-confetti"
@@ -47,10 +50,11 @@ export function CompletionCelebration({ onClose }) {
                 animationDelay: `${Math.random() * 2}s`,
                 animationDuration: `${1 + Math.random() * 2}s`,
                 transform: `rotate(${Math.random() * 360}deg)`,
-                opacity: 0.7
+                opacity: 0.7,
+                fontSize: `${1 + Math.random() * 1.5}rem`
               }}
             >
-              {['🎉', '✨', '🌟', '💪', '🎯'][Math.floor(Math.random() * 5)]}
+              {['🎉', '✨', '🌟', '💪', '🎯', '🏆', '⭐', '🎊'][Math.floor(Math.random() * 8)]}
             </div>
           ))}
         </div>

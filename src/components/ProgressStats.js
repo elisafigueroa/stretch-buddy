@@ -14,32 +14,47 @@ export function ProgressStats() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-      <div className="text-center mb-4">
+    <div className="stats-card">
+      <div className="text-center mb-6">
         <h2 className="text-xl font-bold text-blue-600">{getStreakMessage()}</h2>
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="text-center">
-          <div className="text-2xl font-bold text-gray-800">{stats.todayStretches}</div>
-          <div className="text-sm text-gray-600">Today's Stretches</div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="text-center transform hover:scale-105 transition-transform">
+          <div className="text-3xl font-bold text-gray-800 mb-1">{stats.todayStretches}</div>
+          <div className="text-sm text-gray-600 font-medium">Today's Stretches</div>
         </div>
         
-        <div className="text-center">
-          <div className="text-2xl font-bold text-gray-800">{formatTime(stats.todayTime)}</div>
-          <div className="text-sm text-gray-600">Today's Time</div>
+        <div className="text-center transform hover:scale-105 transition-transform">
+          <div className="text-3xl font-bold text-gray-800 mb-1">{formatTime(stats.todayTime)}</div>
+          <div className="text-sm text-gray-600 font-medium">Today's Time</div>
         </div>
         
-        <div className="text-center">
-          <div className="text-2xl font-bold text-gray-800">{stats.totalStretches}</div>
-          <div className="text-sm text-gray-600">Total Stretches</div>
+        <div className="text-center transform hover:scale-105 transition-transform">
+          <div className="text-3xl font-bold text-gray-800 mb-1">{stats.totalStretches}</div>
+          <div className="text-sm text-gray-600 font-medium">Total Stretches</div>
         </div>
         
-        <div className="text-center">
-          <div className="text-2xl font-bold text-gray-800">{formatTime(stats.totalTime)}</div>
-          <div className="text-sm text-gray-600">Total Time</div>
+        <div className="text-center transform hover:scale-105 transition-transform">
+          <div className="text-3xl font-bold text-gray-800 mb-1">{formatTime(stats.totalTime)}</div>
+          <div className="text-sm text-gray-600 font-medium">Total Time</div>
         </div>
       </div>
+
+      {stats.streak > 0 && (
+        <div className="mt-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-600">Current Streak</span>
+            <span className="text-sm font-medium text-blue-600">{stats.streak} days</span>
+          </div>
+          <div className="progress-bar">
+            <div 
+              className="progress-bar-fill" 
+              style={{ width: `${Math.min((stats.streak / 7) * 100, 100)}%` }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

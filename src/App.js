@@ -2,10 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { stretches, categories } from './data/stretches';
 import { ProgressProvider, useProgress } from './context/ProgressContext';
 import { FavoritesProvider, useFavorites } from './context/FavoritesContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { ProgressStats } from './components/ProgressStats';
 import { DetailedStats } from './components/DetailedStats';
 import { CompletionCelebration } from './components/CompletionCelebration';
 import { FavoriteButton } from './components/FavoriteButton';
+import { ThemeToggle } from './components/ThemeToggle';
 import './App.css';
 
 function StretchApp() {
@@ -81,7 +83,7 @@ function StretchApp() {
     if (showFavorites && favorites.length === 0) {
       return (
         <div className="text-center py-12">
-          <div className="text-6xl mb-4">💭</div>
+          <div className="text-6xl mb-4 animate-bounce">💭</div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">No favorites yet</h2>
           <p className="text-gray-600 mb-4">
             Click the heart icon on any stretch to add it to your favorites
@@ -97,14 +99,14 @@ function StretchApp() {
     }
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredStretches.map((stretch) => (
-          <div key={stretch.id} className="bg-white rounded-lg shadow-md p-4 relative">
+          <div key={stretch.id} className="stretch-card p-4">
             <FavoriteButton stretchId={stretch.id} />
             <img 
               src={stretch.image} 
               alt={stretch.name}
-              className="w-full h-48 object-cover rounded-lg mb-4"
+              className="w-full h-48 object-cover mb-4"
             />
             <h2 className="text-xl font-semibold mb-2">{stretch.name}</h2>
             <p className="text-gray-600 mb-4">{stretch.description}</p>
@@ -112,7 +114,7 @@ function StretchApp() {
               {stretch.tags.map(tag => (
                 <span 
                   key={tag}
-                  className="px-2 py-1 bg-gray-100 text-gray-600 text-sm rounded-full"
+                  className="tag"
                 >
                   {tag}
                 </span>
@@ -120,7 +122,7 @@ function StretchApp() {
             </div>
             <button
               onClick={() => startStretch(stretch)}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
             >
               Start Stretch
             </button>
@@ -131,104 +133,104 @@ function StretchApp() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-blue-600 text-white p-4 shadow-md">
-        <h1 className="text-2xl font-bold text-center">Stretch Buddy</h1>
+    <div className="min-h-screen">
+      <header className="app-header">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+              <span className="text-3xl">🧘‍♂️</span>
+              Stretch Buddy
+            </h1>
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
+              <button
+                onClick={() => setShowDetailedStats(!showDetailedStats)}
+                className="text-white hover:text-blue-100 transition-colors"
+              >
+                {showDetailedStats ? 'Hide Stats' : 'Show Stats'}
+              </button>
+            </div>
+          </div>
+        </div>
       </header>
 
       <main className="container mx-auto p-4">
         <div className="mb-6">
           <ProgressStats />
-          <div className="text-center mt-4">
-            <button
-              onClick={() => setShowDetailedStats(!showDetailedStats)}
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
-              {showDetailedStats ? 'Hide Detailed Stats' : 'Show Detailed Stats'}
-            </button>
-          </div>
         </div>
 
         {showDetailedStats && <DetailedStats />}
         
         {!currentStretch ? (
           <>
-            <div className="mb-6">
-              <div className="flex flex-wrap gap-2 justify-center">
+            <div className="category-filter">
+              <button
+                onClick={() => {
+                  setShowFavorites(false);
+                  setSelectedCategory('all');
+                }}
+                className={`category-button ${
+                  !showFavorites && selectedCategory === 'all' ? 'active' : ''
+                }`}
+              >
+                All Stretches
+              </button>
+              <button
+                onClick={() => setShowFavorites(true)}
+                className={`category-button ${
+                  showFavorites ? 'active' : ''
+                }`}
+              >
+                Favorites {favorites.length > 0 && `(${favorites.length})`}
+              </button>
+              {!showFavorites && categories.map(category => (
                 <button
-                  onClick={() => {
-                    setShowFavorites(false);
-                    setSelectedCategory('all');
-                  }}
-                  className={`px-4 py-2 rounded-full ${
-                    !showFavorites && selectedCategory === 'all'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-100'
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`category-button ${
+                    selectedCategory === category.id ? 'active' : ''
                   }`}
                 >
-                  All Stretches
+                  {category.name}
                 </button>
-                <button
-                  onClick={() => setShowFavorites(true)}
-                  className={`px-4 py-2 rounded-full ${
-                    showFavorites
-                      ? 'bg-red-500 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  Favorites {favorites.length > 0 && `(${favorites.length})`}
-                </button>
-                {!showFavorites && categories.map(category => (
-                  <button
-                    key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
-                    className={`px-4 py-2 rounded-full ${
-                      selectedCategory === category.id
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    {category.name}
-                  </button>
-                ))}
-              </div>
+              ))}
             </div>
 
             {renderStretchGrid()}
           </>
         ) : (
-          <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">
+          <div className="stretch-card p-6 max-w-2xl mx-auto">
             <h2 className="text-2xl font-bold mb-4">{currentStretch.name}</h2>
             <img 
               src={currentStretch.image} 
               alt={currentStretch.name}
-              className="w-full h-64 object-cover rounded-lg mb-4"
+              className="w-full h-64 object-cover mb-4"
             />
             <p className="text-gray-600 mb-4">{currentStretch.description}</p>
             <div className="flex flex-wrap gap-2 mb-4">
               {currentStretch.tags.map(tag => (
                 <span 
                   key={tag}
-                  className="px-2 py-1 bg-gray-100 text-gray-600 text-sm rounded-full"
+                  className="tag"
                 >
                   {tag}
                 </span>
               ))}
             </div>
             <div className="text-center">
-              <div className={`text-4xl font-bold mb-4 ${isActive && !isPaused ? 'timer-active' : ''}`}>
+              <div className={`timer-display ${isActive && !isPaused ? 'timer-active' : ''}`}>
                 {formatTime(timer)}
               </div>
               <div className="space-x-4">
                 <button
                   onClick={togglePause}
-                  className="bg-yellow-600 text-white py-2 px-6 rounded hover:bg-yellow-700 transition-colors"
+                  className="bg-yellow-600 text-white py-2 px-6 rounded-lg hover:bg-yellow-700 transition-colors"
                 >
                   {isPaused ? 'Resume' : 'Pause'}
                 </button>
                 <button
                   onClick={() => endStretch(false)}
-                  className="bg-red-600 text-white py-2 px-6 rounded hover:bg-red-700 transition-colors"
+                  className="bg-red-600 text-white py-2 px-6 rounded-lg hover:bg-red-700 transition-colors"
                 >
                   End Stretch
                 </button>
@@ -247,11 +249,13 @@ function StretchApp() {
 
 function App() {
   return (
-    <ProgressProvider>
-      <FavoritesProvider>
-        <StretchApp />
-      </FavoritesProvider>
-    </ProgressProvider>
+    <ThemeProvider>
+      <ProgressProvider>
+        <FavoritesProvider>
+          <StretchApp />
+        </FavoritesProvider>
+      </ProgressProvider>
+    </ThemeProvider>
   );
 }
 
