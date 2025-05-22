@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { stretches, categories } from './data/stretches';
 import { ProgressProvider, useProgress } from './context/ProgressContext';
 import { FavoritesProvider, useFavorites } from './context/FavoritesContext';
